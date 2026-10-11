@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Olist Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#F3F7FF;--card:#fff;--bd:#DCE6FA;--navy:#0B1F6B;--sub:#4B63B8;--side:#0A2FA0;--act:#0057FF;--blue:#2563EB;--green:#1FBF8F;--orange:#FF6B35;--yellow:#FFC145;--lb:#6EA0FF;--pale:#C5D5F5;--pos:#12B76A;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B1230;--card:#131C45;--bd:#26356F;--navy:#E8EEFF;--sub:#9DB0E8}}
+:root[data-theme="dark"]{--bg:#0B1230;--card:#131C45;--bd:#26356F;--navy:#E8EEFF;--sub:#9DB0E8}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--navy);font-family:Inter,Poppins,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+.app{display:flex;min-height:100vh}
+aside{width:220px;background:var(--side);color:#fff;padding:18px 12px;flex-shrink:0}
+.logo{font-size:34px;font-weight:800;letter-spacing:-1px;margin:0 8px 22px}
+aside a{display:flex;gap:10px;align-items:center;color:#fff;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:14px;margin-bottom:6px;line-height:1.3}
+aside a.on{background:var(--act)}aside a:hover{background:rgba(255,255,255,.12)}aside a.on:hover{background:var(--act)}
+main{flex:1;padding:22px;min-width:0}
+h1{margin:0;font-size:28px}.sub{color:var(--sub);margin:4px 0 18px;font-size:14px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+select{background:var(--card);color:var(--navy);border:1px solid var(--bd);border-radius:20px;padding:8px 14px;font-size:13px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}
+.g2{display:grid;grid-template-columns:3fr 2fr;gap:14px;margin-bottom:14px}
+.kpi,.card{background:var(--card);border:1px solid var(--bd);border-radius:14px}
+.kpi{display:flex;gap:12px;align-items:center;padding:16px;border-left:6px solid var(--c)}
+.kpi i{font-style:normal;width:42px;height:42px;border-radius:50%;background:var(--c);display:grid;place-items:center;font-size:19px;flex-shrink:0}
+.kpi small{display:block;color:var(--sub);font-size:13px}.kpi b{font-size:26px}
+.card{padding:16px;min-width:0}.card h3{margin:0 0 10px;font-size:16px}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 6px;border-bottom:1px solid var(--bd);text-align:left}
+th{color:var(--sub)}td:last-child,th:last-child{text-align:right}tfoot td{font-weight:700;color:var(--orange)}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;min-height:80vh}
+.hero h2{font-size:42px;margin:10px 0}.hero p{color:var(--sub);font-size:16px}
+.hero .logo{color:var(--blue);margin:0;font-size:60px}.tag{font-style:italic;color:var(--blue);margin-top:24px}
+.nav a{display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:var(--navy);padding:20px;border-radius:14px;margin-bottom:14px;border:1px solid var(--bd);background:var(--card);border-left:8px solid var(--c)}
+.nav b{font-size:18px;display:block}.nav span{color:var(--sub);font-size:13px}.nav a:hover{transform:translateX(4px)}
+@media(max-width:900px){.app{flex-direction:column}aside{width:100%;display:flex;flex-wrap:wrap;gap:6px;padding:12px}.logo{width:100%;margin:0 4px 6px;font-size:26px}aside a{margin:0;padding:8px 10px;font-size:12px}.g4{grid-template-columns:1fr 1fr}.g2,.hero{grid-template-columns:1fr}.hero h2{font-size:30px}h1{font-size:22px}}
+</style></head><body>
+<div class="app"><aside><div class="logo">olist</div><div id="nav" style="display:contents"></div></aside><main id="m"></main></div>
+<script>
+const $=s=>document.querySelector(s),C=n=>getComputedStyle(document.documentElement).getPropertyValue('--'+n).trim();
+let ch=[];
+function mk(id,t,l,d,o={}){const dn=t==='doughnut',c=new Chart($('#'+id),{type:t,data:{labels:l,datasets:[{data:d,backgroundColor:o.bg||C('blue'),borderColor:o.fill?C('blue'):(dn?C('card'):o.bg||C('blue')),fill:o.fill,tension:.35,borderRadius:4,pointRadius:0}]},options:{indexAxis:o.h?'y':'x',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:dn,position:'right',labels:{color:C('sub')}}},cutout:'62%',scales:dn?{}:{x:{ticks:{color:C('sub')},grid:{display:o.h,color:C('bd')}},y:{ticks:{color:C('sub')},grid:{display:!o.h,color:C('bd')}}}}});ch.push(c);return c}
+const K=a=>`<div class="g4">${a.map(([t,v,c,i])=>`<div class="kpi" style="--c:var(--${c})"><i>${i}</i><div><small>${t}</small><b>${v}</b></div></div>`).join('')}</div>`;
+const B=(t,id,h=250)=>`<section class="card"><h3>${t}</h3><div style="height:${h}px"><canvas id="${id}"></canvas></div></section>`;
+const cols=[C('blue'),C('green'),C('orange'),C('yellow'),C('pale')];
+const pay=()=>mk('p','doughnut',['credit_card','boleto','voucher','debit_card'],[78.34,17.92,2.37,1.37],{bg:['blue','green','orange','yellow'].map(C)});
+const M=['2017-01','02','03','04','05','06','07','08','09','10','11','12','2018-01','02','03','04','05','06','07','08'],MV=[.1,.25,.4,.35,.55,.5,.6,.7,.65,.8,1.15,.95,.85,.95,1.15,1.1,1.1,1,1,.9];
+const R={
+home:{h:()=>`<div class="hero"><div><div class="logo">olist</div><h2>Turning data into business growth.</h2><p>Explore key insights across sales, payments, products, customers and delivery performance.</p><div class="tag">Better data. Bigger opportunities.</div></div><div class="nav">
+<a href="#sales" style="--c:var(--blue)"><div><b>Sales &amp; Payments</b><span>View sales performance, payments and financial insights.</span></div>→</a>
+<a href="#prod" style="--c:var(--green)"><div><b>Products, Sellers &amp; Customers</b><span>Explore product performance, sellers and customer base.</span></div>→</a>
+<a href="#del" style="--c:#7B61D9"><div><b>Delivery, Satisfaction &amp; Geography</b><span>Track delivery performance, customer satisfaction and geographic trends.</span></div>→</a></div></div>`,i(){}},
+sales:{t:'Sales & Payments',s:'Overview of your business performance, orders and payments.',f:1,h:()=>K([['Total Revenue','13.49M','blue','🪙'],['Total Orders','98K','green','🛒'],['AVG Order Value','137.42','orange','👤'],['Revenue YOY %','138.28%','yellow','💳']])+`<div class="g2">${B('Total Revenue by Month (M)','a')}${B('Total Revenue by Year (M)','b')}</div><div class="g2">${B('Total Orders by Status','o')}${B('Payment Type Distribution (%)','p')}</div>`,
+i(){const a=mk('a','line',M,MV,{fill:true,bg:C('lb')+'55'});$('#yr').onchange=e=>{const v=e.target.value,r=v=='2017'?[0,12]:v=='2018'?[12,20]:[0,20];a.data.labels=M.slice(...r);a.data.datasets[0].data=MV.slice(...r);a.update()};
+mk('b','bar',['2017','2018'],[6.1,7.3],{bg:[C('act'),C('blue')]});mk('o','bar',['delivered','shipped','canceled','unavailable'],[96,1,1,1],{h:1,bg:[C('green'),C('blue'),C('orange'),C('yellow')]});pay()}},
+prod:{t:'Product, Sellers & Customers',s:'Insights into your products, sellers and customer base.',h:()=>K([['Items Sold','112K','blue','📦'],['Active Sellers','3K','green','👥'],['Unique Customers','95K','orange','👤'],['AVG Orders By Customer','1.03','yellow','🛒']])+`<div class="g2">${B('Total Revenue by Product Category (M)','a')}<section class="card"><h3>Top Sellers</h3><table><tr><th>seller_id</th><th>Total Revenue</th></tr>${[['1025f0e2','138,968.55'],['4869f7a5','229,237.63'],['4a3ca931','200,326.12'],['53243585','222,776.05'],['7a67c85e','141,715.54'],['7c67e144','187,923.89'],['7e93a43e','172,583.88']].map(r=>`<tr><td>${r[0]}…</td><td>${r[1]}</td></tr>`).join('')}<tfoot><tr><td>Total</td><td>1,781,770.06</td></tr></tfoot></table></section></div><div class="g2">${B('Total Revenue by Product ID (K)','b',280)}${B('Customer Review','c',280)}</div>`,
+i(){mk('a','bar',['Health_Beauty','Watches_Gifts','Bed_Bath_Table','Sports_Leisure','Computers_Acc.'],[1.26,1.2,1.04,.98,.9],{bg:[C('side'),C('blue'),C('green'),C('orange'),C('yellow')]});
+mk('b','bar',['bb50f2e2','6cdd5384','d6160fb7','d1c42706','99a4788c','3dd2a171','25c38557','5f504b3a','53b36df6','aca2d00e'],[64,55,49,47,43,41,39,38,38,38],{h:1,bg:C('lb')});
+mk('c','bar',['0a0a92','da122d','763c8b','dc4802','459bef','ff4159','400766','eeb5dd','48e1ac','a229eb'],[13.4,7.4,7.2,6.7,6.7,6.5,5.9,4.7,4.6,4.4],{bg:C('lb')})}},
+del:{t:'Delivery, Satisfaction & Geography',s:'Track delivery performance, customer satisfaction and geographic trends.',h:()=>K([['Late Deliveries %','0.34%','blue','🚚'],['Avg Delivery Days','12.50','green','📅'],['Avg Review Score','1.00','orange','⭐'],['Avg Freight','22.82','yellow','📦']])+`<div class="g2">${B('Avg Delivery Days by State','a')}${B('Payment Type Distribution (%)','p')}</div>${B('Total Orders by Customer State (K)','b',300)}`,
+i(){mk('a','bar',['RR','AP','AM','AL','PA','MA','SE','CE','AC','PB'],[29,27,26,25,24,22,21,21,21,20],{bg:C('side')});pay();
+mk('b','bar',['SP','RJ','MG','RS','PR','SC','BA','DF','ES','GO'],[41,13,11,5,5,4,3,2,2,2],{bg:C('blue')})}}};
+const T=[['home','🏠','Overview'],['sales','📊','Sales & Payments'],['prod','📦','Products, Sellers & Customers'],['del','📍','Delivery, Satisfaction & Geography']];
+function go(){const k=location.hash.slice(1),p=R[k]?k:'home',r=R[p];ch.forEach(c=>c.destroy());ch=[];
+$('#nav').innerHTML=T.map(t=>`<a href="#${t[0]}" class="${t[0]==p?'on':''}"><span>${t[1]}</span>${t[2]}</a>`).join('');
+$('#m').innerHTML=p=='home'?r.h():`<div class="top"><div><h1>${r.t}</h1><div class="sub">${r.s}</div></div>${r.f?'<select id="yr"><option value="all">Year: All</option><option>2017</option><option>2018</option></select>':''}</div>`+r.h();r.i();scrollTo(0,0)}
+addEventListener('hashchange',go);go();
+</script></body></html>
